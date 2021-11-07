@@ -1,9 +1,12 @@
+import json
+
 from fastapi import Depends, FastAPI, HTTPException, status, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from deps import get_current_user
 from forms import OAuth2PasswordRequestForm
+from kafka import KafkaConsumer, KafkaProducer
 from models import User
 from task_repo import get_tasks_by_user_id
 from user_repo import create_user, is_user_exists, get_user, IncorrectCredentials
@@ -28,10 +31,13 @@ def registration(form_data: OAuth2PasswordRequestForm = Depends()):
     if is_user_exists(form_data.email):
         raise HTTPException(status_code=400, detail="Username already exists")
 
-    access_token = create_user(form_data)
+    user = create_user(form_data)
+
+    producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode('utf-8'))
+    producer.send('foobar', {'id': user.id, 'token': user.access_token})
 
     response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
-    response.set_cookie(key="AccessToken", value=access_token)
+    response.set_cookie(key="AccessToken", value=user.access_token)
     return response
 
 
