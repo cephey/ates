@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="width: 80%; margin: 50px auto 0 auto;">
+
+    <h1>Задачи <span style="color: grey">{{ user.email }}</span></h1>
+
+    <table>
+        <tr>
+            <th>Статус</th>
+            <th>Описание</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.status }}</td>
+                <td>{{ task.description }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
