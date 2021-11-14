@@ -3,6 +3,7 @@ import uuid
 
 from forms import TaskAddForm
 from models import User, TaskInDB
+from utils import parse_title
 
 
 def get_tasks_by_user_id(user_id):
@@ -24,16 +25,9 @@ def create_task(form_data: TaskAddForm, user: User) -> TaskInDB:
     sqlite_conn = sqlite3.connect('sqlite_ates.db')
     cursor = sqlite_conn.cursor()
 
+    title, jira_id = parse_title(form_data.title)
     public_uuid = str(uuid.uuid4())
     status = 'new'
-
-    title = form_data.title
-    if ('[' in title) and (']' in title):
-        jira_id, title = title.split(']')
-        jira_id = jira_id.strip().split('[')[1].strip()
-        title = title.strip()
-        if title.startswith('-'):
-            title = title[1:].strip()
 
     sqlite_insert_query = (f"""INSERT INTO tasks
             (public_id, user_id, title, description, status, jira_id)

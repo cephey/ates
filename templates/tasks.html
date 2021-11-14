@@ -22,7 +22,7 @@
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
                 <td>{{ task.status }}</td>
-                <td>{{ task.jira_id }}</td>
+                <td>{% if task.jira_id %}{{ task.jira_id }}{% endif %}</td>
             </tr>
         {% endfor %}
     </table>
