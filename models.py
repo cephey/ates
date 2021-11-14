@@ -21,6 +21,7 @@ class Task(BaseModel):
     description: str
     status: str
     public_id: str
+    jira_id: Optional[str] = None
 
 
 class TaskInDB(Task):
