@@ -31,10 +31,11 @@ def create_user(form_data: OAuth2PasswordRequestForm) -> UserInDB:
 
     hashed_password = fake_hash_password(form_data.password)
     access_token = str(uuid.uuid4())
+    public_uuid = str(uuid.uuid4())
 
     sqlite_insert_query = (f"""INSERT INTO users
-            (email, hashed_password, role, access_token, full_name)
-            VALUES ('{form_data.email}', '{hashed_password}', 'manager', '{access_token}', 'Без Имени')""")
+        (email, public_id, hashed_password, role, access_token, full_name)
+        VALUES ('{form_data.email}', '{public_uuid}', '{hashed_password}', 'manager', '{access_token}', 'Без Имени')""")
     cursor.execute(sqlite_insert_query)
     sqlite_conn.commit()
 
@@ -48,6 +49,7 @@ def create_user(form_data: OAuth2PasswordRequestForm) -> UserInDB:
         full_name='Без Имени',
         hashed_password=hashed_password,
         access_token=access_token,
+        public_id=public_uuid,
     )
     return user
 
@@ -56,7 +58,7 @@ def get_user(form_data: OAuth2PasswordRequestForm) -> UserInDB:
     sqlite_conn = sqlite3.connect('sqlite_ates.db')
     cursor = sqlite_conn.cursor()
 
-    query = (f"""SELECT id, email, hashed_password, access_token, full_name
+    query = (f"""SELECT id, email, hashed_password, access_token, full_name, public_id
         FROM users
         WHERE email = '{form_data.email}'
         ORDER BY id DESC""")
@@ -70,6 +72,7 @@ def get_user(form_data: OAuth2PasswordRequestForm) -> UserInDB:
             full_name=record[4],
             hashed_password=record[2],
             access_token=record[3],
+            public_id=record[5],
         )
     else:
         raise IncorrectCredentials

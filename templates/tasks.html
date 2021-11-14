@@ -10,16 +10,24 @@
 
     <table>
         <tr>
-            <th>Статус</th>
+            <th>PublicID</th>
+            <th>Название</th>
             <th>Описание</th>
+            <th>Статус</th>
         </tr>
         {% for task in tasks %}
             <tr>
-                <td>{{ task.status }}</td>
+                <td>{{ task.public_id }}</td>
+                <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
+                <td>{{ task.status }}</td>
             </tr>
         {% endfor %}
     </table>
+    <br>
+    <br>
+    <br>
+    <a href="/tasks/add">Add task</a>
 
 </body>
 </html>

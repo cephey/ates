@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="width: 80%; margin: 50px auto 0 auto;">
+
+    <h1>Добавить задачу</h1>
+
+    <form action="/tasks/create" method="post">
+        <label>Title: </label>
+        <input type="text" name="title" required>
+        <br>
+        <br>
+        <label>Description: </label>
+        <input type="text" name="description" required>
+        <br>
+        <br>
+        <button type="submit">Создать</button>
+        <br>
+        <br>
+        <br>
+    </form>
+
+</body>
+</html>

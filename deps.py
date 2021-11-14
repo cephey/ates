@@ -11,7 +11,7 @@ def get_user(token: str):
     sqlite_conn = sqlite3.connect('sqlite_ates.db')
     cursor = sqlite_conn.cursor()
 
-    query = (f"""SELECT id, email, hashed_password, access_token, full_name
+    query = (f"""SELECT id, email, hashed_password, access_token, full_name, public_id
     FROM users
     WHERE access_token = '{token}'
     """)
@@ -26,6 +26,7 @@ def get_user(token: str):
             full_name=record[4],
             hashed_password=record[2],
             access_token=record[4],
+            public_id=record[5],
         )
 
 
