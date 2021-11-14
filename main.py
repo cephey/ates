@@ -33,12 +33,12 @@ def registration(form_data: OAuth2PasswordRequestForm = Depends()):
 
     user = create_user(form_data)
 
-    # producer = KafkaProducer(
-    #     bootstrap_servers='localhost:9092',
-    #     value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-    #     max_block_ms=5_000,
-    # )
-    # producer.send('test', value={'id': user.id, 'token': user.access_token})
+    producer = KafkaProducer(
+        bootstrap_servers='localhost:9092',
+        value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+        max_block_ms=5_000,
+    )
+    producer.send('ates', value={'id': user.id, 'token': user.access_token})
 
     response = RedirectResponse(url="/", status_code=status.HTTP_302_FOUND)
     response.set_cookie(key="AccessToken", value=user.access_token)
